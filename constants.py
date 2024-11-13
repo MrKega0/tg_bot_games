@@ -1,0 +1,1 @@
+MAINMENU, KNB, BAC, XO_GAME, RATE= range(5)
