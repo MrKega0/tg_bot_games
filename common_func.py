@@ -6,6 +6,8 @@ from bd import print_bac_records, user_bac_record, print_knb_records, user_knb_r
 
 from bd import create_user
 from constants import MAINMENU, RATE
+from datetime import timedelta, datetime,time
+import pytz
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -16,7 +18,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=f"Привет, {update.effective_user.full_name}\nВыбери действие:\n/knb - камень ножницы бумага\n/bac - быки и коровы\n/xo - крестики нолики\n/rate - покажет ваш рекорды и список рекордсменов",
+        disable_notification = True
     )
+    # time(20,16, tzinfo=pytz.timezone('Etc/GMT-3')
+    context.user_data['a'] = 30
+    context.job_queue.run_once(remind_to_game, timedelta(seconds=5), chat_id=update.effective_user.id, data={'user_data':context.user_data, 'update':update})
     create_user(update)
     return MAINMENU
 
@@ -94,4 +100,6 @@ async def rate_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(text, reply_markup=markup)
     return RATE
 
-
+async def remind_to_game(context: ContextTypes.DEFAULT_TYPE):
+    print(context.job.chat_id)
+    print(context.user_data)

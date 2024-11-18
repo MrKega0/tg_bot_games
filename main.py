@@ -1,4 +1,5 @@
 import logging
+import os
 
 from telegram import Update
 from telegram.ext import (
@@ -18,12 +19,16 @@ from knb_game import knb, text
 from xo_game import x_o_game, xo
 from common_func import start, rate, rate_answer
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
 if __name__ == "__main__":
-    TOKEN = "token"
+    TOKEN = os.getenv('TOKEN')
 
     application = ApplicationBuilder().token(TOKEN).build()
     conv_hand = ConversationHandler(
@@ -45,7 +50,7 @@ if __name__ == "__main__":
             CommandHandler("rate", rate)
         ],
     )
-
+    # application.job_queue.run_daily()
     application.add_handler(conv_hand)
 
     create_db()

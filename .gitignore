@@ -1,3 +1,4 @@
 __pycache__
 game_bot.db
 token.txt
+.env
