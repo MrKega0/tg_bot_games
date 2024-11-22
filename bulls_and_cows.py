@@ -89,7 +89,7 @@ async def bulls_and_cows(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for i in context.job_queue.jobs():
             if i.job.name == 'bac_remind':
                 i.schedule_removal()
-                
+
         return await bac(update, context)
     else:
         for i in context.job_queue.jobs():
@@ -101,5 +101,4 @@ async def remind_to_game(context: ContextTypes.DEFAULT_TYPE):
     #print(context.job.chat_id)
     #print(context.job.data)
     #print(context.user_data)
-    if len(context.job_queue.get_jobs_by_name('bac_remind'))==0:
-        await context.bot.send_message(chat_id=context.job.chat_id, text='У вас есть незавершённая игра в быках и коровах', disable_notification=True)
+    await context.bot.send_message(chat_id=context.job.chat_id, text='У вас есть незавершённая игра в быках и коровах', disable_notification=True)

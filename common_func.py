@@ -4,7 +4,7 @@ from telegram.ext import (
 )
 from bd import print_bac_records, user_bac_record, print_knb_records, user_knb_record
 
-from bd import create_user
+from bd import create_user, get_all_user_ids
 from constants import MAINMENU, RATE
 from datetime import timedelta, datetime,time
 import pytz
@@ -21,8 +21,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         disable_notification = True
     )
     # time(20,16, tzinfo=pytz.timezone('Etc/GMT-3')
-    context.user_data['a'] = 30
-    context.job_queue.run_once(remind_to_game, timedelta(seconds=5), chat_id=update.effective_user.id, data={'user_data':context.user_data, 'update':update})
+    #context.user_data['a'] = 30
+    #context.job_queue.run_once(remind_to_game, timedelta(seconds=5), chat_id=update.effective_user.id, data={'user_data':context.user_data, 'update':update})
     create_user(update)
     return MAINMENU
 
@@ -100,6 +100,20 @@ async def rate_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(text, reply_markup=markup)
     return RATE
 
-async def remind_to_game(context: ContextTypes.DEFAULT_TYPE):
-    print(context.job.chat_id)
-    print(context.user_data)
+#async def remind_to_game(context: ContextTypes.DEFAULT_TYPE):
+#    print(context.job.chat_id)
+#    print(context.user_data)
+
+async def reminder_to_play(context: ContextTypes.DEFAULT_TYPE):
+    """Рассылает сообщение всем пользователям из базы данных."""
+    chat_ids = get_all_user_ids()  # Получаем все chat_id пользователей
+    
+    for chat_id in chat_ids:
+        try:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text='Готов к игре? У меня есть для тебя несколько классных игр!',
+                disable_notification=True
+            )
+        except Exception as e:
+            print(f"Ошибка при отправке сообщения пользователю {chat_id}: {e}")

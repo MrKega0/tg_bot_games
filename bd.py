@@ -111,3 +111,14 @@ def user_knb_record(update: Update):
     cur.execute(f"SELECT wins FROM users WHERE id = {update.effective_user.id}")
     record = cur.fetchone()[0]
     return record
+
+def get_all_user_ids():
+    """Возвращает список chat_id всех пользователей из базы данных."""
+    connection = sqlite3.connect("game_bot.db")
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT id FROM users")
+    chat_ids = [row[0] for row in cursor.fetchall()]
+    
+    connection.close()
+    return chat_ids

@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 
@@ -12,12 +13,14 @@ from telegram.ext import (
     CallbackQueryHandler
 )
 
+import pytz
+from datetime import time
 from bd import create_db
 from bulls_and_cows import bac, bulls_and_cows
 from constants import BAC, KNB, MAINMENU, XO_GAME, RATE
 from knb_game import knb, text
 from xo_game import x_o_game, xo
-from common_func import start, rate, rate_answer
+from common_func import start, rate, rate_answer, reminder_to_play
 
 from dotenv import load_dotenv
 
@@ -51,6 +54,11 @@ if __name__ == "__main__":
         ],
     )
     # application.job_queue.run_daily()
+    application.job_queue.run_daily(
+        reminder_to_play,  # Функция для выполнения
+        time=time(hour=12, minute=0, tzinfo=pytz.timezone('Europe/Moscow'))  # Время рассылки: 12:00
+    )
+
     application.add_handler(conv_hand)
 
     create_db()
