@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # application.job_queue.run_daily()
     application.job_queue.run_daily(
         reminder_to_play,  # Функция для выполнения
-        time=time(hour=12, minute=0, tzinfo=pytz.timezone('Europe/Moscow'))  # Время рассылки: 12:00
+        time=time(hour=12, minute=0, tzinfo=pytz.timezone('Etc/GMT-3'))  # Время рассылки: 12:00
     )
 
     application.add_handler(conv_hand)

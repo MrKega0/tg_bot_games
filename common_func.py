@@ -6,8 +6,6 @@ from bd import print_bac_records, user_bac_record, print_knb_records, user_knb_r
 
 from bd import create_user, get_all_user_ids
 from constants import MAINMENU, RATE
-from datetime import timedelta, datetime,time
-import pytz
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -87,14 +85,14 @@ async def rate_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("Мои рекорды", callback_data="xo_user_data")],
             [InlineKeyboardButton("Все рекорды", callback_data="records_data")],
         ]
-        text = f'Ваш рекорд: xo_data'
+        text = 'Ваш рекорд: xo_data'
 
     elif query.data == "xo_user_data":
         keyboard = [
             [InlineKeyboardButton("Мои рекорды", callback_data="xo_data")],
             [InlineKeyboardButton("Все рекорды", callback_data="records_data")],
         ]
-        text = f'Ваш рекорд: xo_user_data'
+        text = 'Ваш рекорд: xo_user_data'
         
     markup = InlineKeyboardMarkup(keyboard)
     await query.edit_message_text(text, reply_markup=markup)
