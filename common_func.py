@@ -15,7 +15,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # update.effective_chat - все о диалоге
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"Привет, {update.effective_user.full_name}\nВыбери действие:\n/knb - камень ножницы бумага\n/bac - быки и коровы\n/xo - крестики нолики\n/rate - покажет ваш рекорды и список рекордсменов",
+        text=f"Привет, {update.effective_user.full_name}\nВыбери действие:\n/knb - камень, ножницы, бумага\n/bac - быки и коровы\n/xo - крестики нолики\n/rate - покажет ваш рекорды и список рекордсменов",
         disable_notification = True
     )
     # time(20,16, tzinfo=pytz.timezone('Etc/GMT-3')
