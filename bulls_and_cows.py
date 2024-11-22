@@ -85,14 +85,21 @@ async def bulls_and_cows(update: Update, context: ContextTypes.DEFAULT_TYPE):
         update_bac_record(update, context.user_data['bac_record'])
         del context.user_data['bac_record']
         del context.user_data["bac_saved_num"]
+
+        for i in context.job_queue.jobs():
+            if i.job.name == 'bac_remind':
+                i.schedule_removal()
+                
         return await bac(update, context)
     else:
+        for i in context.job_queue.jobs():
+            if i.job.name == 'bac_remind':
+                i.schedule_removal()
         context.job_queue.run_once(remind_to_game, timedelta(seconds=10), chat_id=update.effective_user.id, data={'user_data':context.user_data, 'update':update}, name='bac_remind')
 
 async def remind_to_game(context: ContextTypes.DEFAULT_TYPE):
     #print(context.job.chat_id)
     #print(context.job.data)
     #print(context.user_data)
-    print(context.job_queue.get_jobs_by_name('bac_remind'))
     if len(context.job_queue.get_jobs_by_name('bac_remind'))==0:
         await context.bot.send_message(chat_id=context.job.chat_id, text='У вас есть незавершённая игра в быках и коровах', disable_notification=True)
